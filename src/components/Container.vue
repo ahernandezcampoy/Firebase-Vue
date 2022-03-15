@@ -1,11 +1,7 @@
 <template>
   <div class="row">
     <div class="col s12 m7">
-      <card
-        :content="project"
-        v-for="(project, i) in projects"
-        :key="i"
-      ></card>
+      <card :content="project" v-for="(project, i) in projects" :key="i"></card>
     </div>
   </div>
 </template>
@@ -27,18 +23,20 @@ export default {
 
   methods: {
     async getProjects() {
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      console.log(userData);
       const response = await fetch(
-        "https://crud-vue-8f4ff-default-rtdb.europe-west1.firebasedatabase.app/projects.json"
+        `https://crud-vue-8f4ff-default-rtdb.europe-west1.firebasedatabase.app/projects/${userData.localId}.json?auth=${userData.idToken}`
       );
       const data = await response.json();
       for (let i in data) {
         // Si no filtramos al añadir los elementos a "projects"
         // hay que añadir un v-if en la "Card"
         // if (data[i].status) {
-          this.projects.push({
-            id: i,
-            value: data[i],
-          });
+        this.projects.push({
+          id: i,
+          value: data[i],
+        });
         // }
       }
 

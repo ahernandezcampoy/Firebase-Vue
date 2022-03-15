@@ -81,7 +81,7 @@ export default {
         langs: [],
         status: true,
       },
-      id: this.$route.params.id
+      id: this.$route.params.id,
     };
   },
 
@@ -91,8 +91,9 @@ export default {
 
   methods: {
     async getProject() {
+      const userData = JSON.parse(localStorage.getItem("userData"));
       const response = await fetch(
-        `https://crud-vue-8f4ff-default-rtdb.europe-west1.firebasedatabase.app/projects/${this.id}.json`
+        `https://crud-vue-8f4ff-default-rtdb.europe-west1.firebasedatabase.app/projects/${userData.localId}/${this.id}.json?auth=${userData.idToken}`
       );
       this.project = await response.json();
 
@@ -100,9 +101,10 @@ export default {
     },
 
     async updateProject() {
+      const userData = JSON.parse(localStorage.getItem("userData"));
       console.log(this.project);
       await fetch(
-        `https://crud-vue-8f4ff-default-rtdb.europe-west1.firebasedatabase.app/projects/${this.id}.json`,
+        `https://crud-vue-8f4ff-default-rtdb.europe-west1.firebasedatabase.app/projects/${userData.localId}/${this.id}.json?auth=${userData.idToken}`,
         {
           method: "PATCH",
           body: JSON.stringify(this.project),
@@ -112,4 +114,3 @@ export default {
   },
 };
 </script>
-

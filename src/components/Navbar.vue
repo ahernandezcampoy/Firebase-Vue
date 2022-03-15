@@ -8,15 +8,27 @@
         >
         <ul class="right hide-on-med-and-down">
           <li>
-            <router-link to="/">Home</router-link>
+            <router-link to="/" v-if="!checkSession">Register</router-link>
           </li>
           <li>
-            <router-link to="/projects" class="waves-effect waves-light btn blue darken-3"
-              >Projects</router-link
-            >
+            <router-link
+              to="/projects"
+              class="waves-effect waves-light btn blue darken-3"
+              v-if="checkSession"
+              >Projects
+            </router-link>
           </li>
           <li>
-            <router-link to="/about">About</router-link>
+            <router-link
+              to="/"
+              class="waves-effect waves-light btn blue darken-3"
+              v-if="checkSession"
+              @click="closeSession"
+              >Logout
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/login" v-if="!checkSession">Login</router-link>
           </li>
         </ul>
       </div>
@@ -24,14 +36,16 @@
 
     <ul class="sidenav" id="mobile-demo">
       <li>
-        <router-link to="/">Home</router-link>
+        <router-link to="/" v-if="!checkSession">Register</router-link>
       </li>
       <li>
-        <router-link to="/projects">Projects</router-link
-        >
+        <router-link to="/projects" v-if="checkSession">Projects</router-link>
       </li>
       <li>
-        <router-link to="/about">About</router-link>
+        <router-link to="/" v-if="checkSession" @click="closeSession">Logout</router-link>
+      </li>
+      <li>
+        <router-link to="/login" v-if="!checkSession">Login</router-link>
       </li>
     </ul>
   </div>
@@ -41,6 +55,24 @@
 export default {
   mounted() {
     M.AutoInit();
+  },
+
+  methods: {
+    closeSession() {
+      const user = localStorage.getItem("userData");
+      if (user) {
+        localStorage.removeItem("userData");
+      }
+    }
+  },
+
+  computed: {
+    checkSession() {
+      const user = localStorage.getItem("userData");
+      if (user) {
+        return true;
+      }
+    },
   },
 };
 </script>

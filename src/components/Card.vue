@@ -50,8 +50,9 @@ export default {
   methods: {
     async deleteProject() {
       const id = this.content.id;
+      const userData = JSON.parse(localStorage.getItem("userData"));
       const response = await fetch(
-        `https://crud-vue-8f4ff-default-rtdb.europe-west1.firebasedatabase.app/projects/${id}.json`,
+        `https://crud-vue-8f4ff-default-rtdb.europe-west1.firebasedatabase.app/projects/${userData.localId}/${id}.json?auth=${userData.idToken}`,
         {
           method: "PATCH",
           body: JSON.stringify({ status: false }),

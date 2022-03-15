@@ -87,8 +87,10 @@ export default {
     async saveProject() {
       if (this.project.title !== "" && this.project.description !== "") {
         console.log(this.project);
+        const userData = JSON.parse(localStorage.getItem("userData"));
+        console.log(userData.localId);
         await fetch(
-          "https://crud-vue-8f4ff-default-rtdb.europe-west1.firebasedatabase.app/projects.json",
+          `https://crud-vue-8f4ff-default-rtdb.europe-west1.firebasedatabase.app/projects/${userData.localId}.json?auth=${userData.idToken}`,
           {
             method: "POST",
             body: JSON.stringify(this.project),
